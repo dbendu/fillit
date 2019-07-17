@@ -59,6 +59,8 @@ static void	check_symbols(const char *buf, size_t size)
 	int iter;
 	int sharps;
 
+	if (size != 20 && size != 21)
+		error();
 	iter = 0;
 	sharps = 0;
 	while (iter < 20)
@@ -80,20 +82,24 @@ static void	check_symbols(const char *buf, size_t size)
 
 static void	check_shapes(const char *buf)
 {
-	size_t i;
+	unsigned i;
+	unsigned contacts;
 
 	i = 0;
-	while (i < 14)
+	contacts = 0;
+	while (i < 19)
 	{
 		if (buf[i] == '#')
 		{
-			if (buf[i + 4] == '#' && buf[i - 1] != '#' && buf[i + 5] != '#')
-				error();
-			if (buf[i + 6] == '#' && buf[i + 1] != '#' && buf[i + 5] != '#')
-				error();
+			contacts += buf[i + 1] == '#';
+			contacts += i > 4 && buf[i - 5] == '#';
+			contacts += i % 5 && buf[i - 1] == '#';
+			contacts += i < 14 && buf[i + 5] == '#';
 		}
 		++i;
 	}
+	if (contacts < 6)
+		error();
 }
 
 t_shape		*get_shapes(const int fd)

@@ -104,33 +104,77 @@ t_shape *find_not_set_shape(const t_shape *shapes)
 	return ((t_shape*)shapes);
 }
 
+// int fillit(char **map, size_t mapsize, t_shape *shapes)
+// {
+// 	t_shape *cur_shape;
+// 	unsigned row;
+// 	unsigned col;
+// 	int flag;
+
+// 	cur_shape = shapes;
+// 	while ((cur_shape = find_not_set_shape(cur_shape)))
+// 	{
+// 		flag = 1;
+// 		row = 0 - 1;
+// 		while (flag && ++row < mapsize)
+// 		{
+// 			col = 0 - 1;
+// 			while (flag && ++col < mapsize)
+// 				if (place_shape(map, mapsize, row, col, cur_shape))
+// 				{
+// 					if (fillit(map, mapsize, shapes))
+// 						return (1);
+// 					remove_shape(map, row, col, cur_shape);
+// 					flag = 0;
+// 				}
+// 		}
+// 		cur_shape = cur_shape->next;
+// 	}
+// 	return (!find_not_set_shape(shapes));
+// }
+
+int is_shapes_equal(const t_shape *a, const t_shape *b)
+{
+	if (!a || !b)
+		return (0);
+	return (a->points[0].x == b->points[0].x &&
+			a->points[0].y == b->points[0].y &&
+			a->points[1].x == b->points[1].x &&
+			a->points[1].y == b->points[1].y &&
+			a->points[2].x == b->points[2].x &&
+			a->points[2].y == b->points[2].y &&
+			a->points[3].x == b->points[3].x &&
+			a->points[3].y == b->points[3].y);
+}
+
 int fillit(char **map, size_t mapsize, t_shape *shapes)
 {
 	t_shape *cur_shape;
+	t_shape *prev_shape;
 	unsigned row;
 	unsigned col;
-	int flag;
 
-	// if (!shapes)
-	// 	return (1);
 	cur_shape = shapes;
 	while ((cur_shape = find_not_set_shape(cur_shape)))
 	{
-		flag = 1;
 		row = 0 - 1;
-		while (flag && ++row < mapsize)
+		while (++row < mapsize)
 		{
 			col = 0 - 1;
-			while (flag && ++col < mapsize)
-				if (place_shape(map, mapsize, row, col, cur_shape))
+			while (++col < mapsize)
+				if (map[row][col] == '.' &&
+					place_shape(map, mapsize, row, col, cur_shape))
 				{
 					if (fillit(map, mapsize, shapes))
 						return (1);
 					remove_shape(map, row, col, cur_shape);
-					flag = 0;
 				}
 		}
+		// cur_shape = cur_shape->next;
+		prev_shape = cur_shape;
 		cur_shape = cur_shape->next;
+		while (is_shapes_equal(prev_shape, find_not_set_shape(cur_shape)))
+			cur_shape = find_not_set_shape(cur_shape->next);
 	}
 	return (!find_not_set_shape(shapes));
 }

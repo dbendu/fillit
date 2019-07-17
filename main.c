@@ -27,7 +27,7 @@ void	error(void)
 	exit(0);
 }
 
- int	main(int argc, const char * const *argv)
+int	main(int argc, const char * const *argv)
 {
 	int		fd;
 	t_shape *shapes;
@@ -41,7 +41,8 @@ void	error(void)
 	}
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 		error();
-	shapes = get_shapes(fd);
+	if (!(shapes = get_shapes(fd)))
+		error();
 	map = solve(shapes);
 	for (size_t i = 0; map[i]; ++i)
 		ft_putstr(map[i]);
