@@ -9,4 +9,4 @@ d:
 c:
 	@clear
 	@gcc -Wall -Werror -Wextra -Ilibft/includes *.c libft.a
-	@./a.out
+	@./a.out file.txt

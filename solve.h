@@ -12,5 +12,5 @@
 
 #include "shape.h"
 
-char **solve(t_shape *shapes);
-extern void error(void);
+char		**solve(t_shape *shapes);
+extern void	error(void);

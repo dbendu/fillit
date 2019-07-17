@@ -35,9 +35,11 @@ void	ft_shapeappend(t_shape **list, t_shape *new)
 	{
 		*list = new;
 		new->end = new;
+		new->letter = 'A';
 	}
 	else
 	{
+		new->letter = (*list)->end->letter + 1;
 		(*list)->end->next = new;
 		(*list)->end = new;
 	}

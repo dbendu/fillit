@@ -98,11 +98,11 @@ static void	check_shapes(const char *buf)
 
 t_shape		*get_shapes(const int fd)
 {
-	char	buf[21];
-	t_shape	*shapes;
-	t_shape	shape;
-	size_t	prev_read;
-	size_t	cur_read;
+	char		buf[21];
+	t_shape		*shapes;
+	t_shape		shape;
+	unsigned	prev_read;
+	unsigned	cur_read;
 
 	prev_read = 0;
 	shapes = NULL;

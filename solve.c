@@ -15,17 +15,10 @@
 #include "solve.h"
 #include "shape.h"
 
-typedef struct	s_map
-{
-	char **map;
-	size_t map_size;
-}				t_map;
-
-
 void fill_map(char ***map, size_t mapsize)
 {
-	size_t row;
-	size_t col;
+	unsigned row;
+	unsigned col;
 
 	row = 0;
 	while (row < mapsize)
@@ -41,7 +34,7 @@ void fill_map(char ***map, size_t mapsize)
 
 void increase_map(char ***map, size_t mapsize)
 {
-	size_t iter;
+	unsigned iter;
 
 	if (*map)
 	{
@@ -52,19 +45,16 @@ void increase_map(char ***map, size_t mapsize)
 		error();
 	if (!((*map)[0] = (char*)malloc(mapsize * (mapsize + 2))))
 		error();
-	iter = 1;
-	while (iter < mapsize)
-	{
+	iter = 0;
+	while (++iter < mapsize)
 		(*map)[iter] = (*map)[iter - 1] + mapsize + 2;
-		++iter;
-	}
 	(*map)[mapsize] = NULL;
 	fill_map(map, mapsize);
 }
 
 size_t prepare_map(char ***map, const t_shape *shapes)
 {
-	size_t min_points;
+	unsigned min_points;
 	size_t mapsize;
 
 	min_points = ft_shapesize(shapes) * 4;
@@ -75,42 +65,33 @@ size_t prepare_map(char ***map, const t_shape *shapes)
 	return (mapsize);
 }
 
-void place(char **map, size_t row, size_t col, const t_shape *shape)
+void remove_shape(char **map, unsigned row, unsigned col, t_shape *shape)
 {
-	size_t i;
+	unsigned i;
 
 	i = 0 - 1;
 	while (++i < 4)
-		map[row + shape->points[i].x][col + shape->points[i].y] = '#';
-}
-
-int place_or_remove(char **map, size_t mapsize, size_t row, size_t col,
-					t_shape *shape, int flag)
-{
-	static int depth = 0;
-	size_t i;
-
-	i = 0 - 1;
-	if (flag)
-	{
-		while (++i < 4)
-			if (row + shape->points[i].x >= mapsize ||
-				col + shape->points[i].y >= mapsize ||
-				map[row + shape->points[i].x][col + shape->points[i].y] != '.')
-				return (0);
-		i = 0 - 1;
-		while (++i < 4)
-			map[row + shape->points[i].x][col + shape->points[i].y] = 'A' + depth;
-		++depth;
-		shape->is_place = 1;
-	}
-	else
-	{
-		--depth;
-		while (++i < 4)
 			map[row + shape->points[i].x][col + shape->points[i].y] = '.';
 		shape->is_place = 0;
-	}
+}
+
+int place_shape(char **map, size_t mapsize, unsigned row, unsigned col,
+					t_shape *shape)
+{
+	unsigned	i;
+	int			letter;
+
+	i = 0 - 1;
+	while (++i < 4)
+		if (row + shape->points[i].x >= mapsize ||
+			col + shape->points[i].y >= mapsize ||
+			map[row + shape->points[i].x][col + shape->points[i].y] != '.')
+			return (0);
+	i = 0 - 1;
+	letter = shape->letter;
+	while (++i < 4)
+		map[row + shape->points[i].x][col + shape->points[i].y] = letter;
+	shape->is_place = 1;
 	return (1);
 }
 
@@ -123,57 +104,15 @@ t_shape *find_not_set_shape(const t_shape *shapes)
 	return ((t_shape*)shapes);
 }
 
-t_shape *find_set_shape(const t_shape *shapes)
-{
-	while (shapes && !shapes->is_place)
-		shapes = shapes->next;
-	return ((t_shape*)shapes);
-}
-/*
-int fillit(char **map, size_t mapsize, t_shape *shapes)
-{
-	t_shape *shape;
-	size_t row;
-	size_t col;
-
-	if (!(shape = find_not_set_shape(shapes)))
-		return (1);
-	row = 0 - 1;
-	while (++row < mapsize)
-	{
-		col = 0 - 1;
-		while (++col < mapsize)
-		{
-			if (place_or_remove(map, mapsize, row, col, shapes, 1))
-			{
-				if (fillit(map, mapsize, shapes->next))
-					return (1);
-				while (shapes)
-				{
-					shapes = find_not_set_shape(shapes);
-					if (fillit(map, mapsize, shapes))
-						return (1);
-					shapes = shapes->next;
-				}
-				place_or_remove(map, mapsize, row, col, shape, 0);
-				return (0);
-			}
-		}
-	}
-	return (0);
-}
-*/
-
 int fillit(char **map, size_t mapsize, t_shape *shapes)
 {
 	t_shape *cur_shape;
-	size_t row;
-	size_t col;
+	unsigned row;
+	unsigned col;
 	int flag;
 
-	if (!shapes)
-		return (1);
-	flag = 1;
+	// if (!shapes)
+	// 	return (1);
 	cur_shape = shapes;
 	while ((cur_shape = find_not_set_shape(cur_shape)))
 	{
@@ -183,21 +122,17 @@ int fillit(char **map, size_t mapsize, t_shape *shapes)
 		{
 			col = 0 - 1;
 			while (flag && ++col < mapsize)
-			{
-				if (place_or_remove(map, mapsize, row, col, cur_shape, 1))
+				if (place_shape(map, mapsize, row, col, cur_shape))
 				{
 					if (fillit(map, mapsize, shapes))
 						return (1);
-					place_or_remove(map, mapsize, row, col, cur_shape, 0);
+					remove_shape(map, row, col, cur_shape);
 					flag = 0;
 				}
-			}
 		}
 		cur_shape = cur_shape->next;
 	}
-	if (!find_not_set_shape(shapes))
-		return (1);
-	return (0);
+	return (!find_not_set_shape(shapes));
 }
 
 char **solve(t_shape *shapes)

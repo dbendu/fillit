@@ -27,6 +27,7 @@ typedef struct		s_shape
 	struct s_shape	*next;
 	struct s_shape	*end;
 	int				is_place;
+	int				letter;
 }					t_shape;
 
 void				ft_shapeclear(t_shape **list);
