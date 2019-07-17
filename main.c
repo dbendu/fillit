@@ -29,27 +29,24 @@ void	error(void)
 
  int	main(int argc, const char * const *argv)
 {
-	 int		iter;
 	int		fd;
 	t_shape *shapes;
 	char	**map;
 
-	iter = 0;
-	while (++iter <= argc)
+	if (argc != 2)
 	{
-		printf("arg: %s\n", argv[iter]);
-		if ((fd = open(argv[iter], O_RDONLY)) == -1)
-			error();
-		write(1, "ok\n", 3);
-		shapes = get_shapes(fd);
-		map = solve(shapes);
-		for (size_t i = 0; map[i]; ++i)
-			printf("%s", map[i]);
-		free(map[0]);
-		free(map);
-		ft_shapeclear(&shapes);
+		write(1, "Only one file should be in arguments.\n", 39);
+		write(1, "Example: fillit /*path*/filename\n", 34);
+		return (0);
 	}
-	// for (int i = 0; i < argc; ++i)
-	// 	printf("arg %i is %s\n", i, argv[i]);
+	if ((fd = open(argv[1], O_RDONLY)) == -1)
+		error();
+	shapes = get_shapes(fd);
+	map = solve(shapes);
+	for (size_t i = 0; map[i]; ++i)
+		ft_putstr(map[i]);
+	free(map[0]);
+	free(map);
+	ft_shapeclear(&shapes);
 	return (0);
 }

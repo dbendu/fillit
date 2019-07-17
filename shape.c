@@ -55,7 +55,7 @@ void	ft_shapeclear(t_shape **list)
 	{
 		temp = iter->next;
 		free(iter);
-		iter = iter->next;
+		iter = temp;
 	}
 	*list = NULL;
 }
