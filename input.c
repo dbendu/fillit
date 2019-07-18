@@ -24,7 +24,8 @@ static void	shift_shape_in_corner(t_shape *shape)
 	size_t y_shift;
 
 	x_shift = shape->points[0].x;
-	y_shift = ft_min(ft_min(shape->points[0].y, shape->points[1].y),
+	y_shift = ft_min(ft_min(shape->points[0].y,
+							shape->points[1].y),
 							shape->points[2].y);
 	iter = 0 - 1;
 	while (++iter < 4)
@@ -39,61 +40,59 @@ static void	get_shape(t_shape *shape, const char *buf)
 	size_t	iter;
 	size_t	pos;
 
-	iter = 0;
+	iter = 0 - 1;
 	pos = 0;
-	while (iter < 20)
-	{
+	while (++iter < 20)
 		if (buf[iter] == '#')
 		{
 			shape->points[pos].x = iter / 5;
 			shape->points[pos].y = iter % 5;
 			++pos;
 		}
-		++iter;
-	}
 	shift_shape_in_corner(shape);
 }
 
-static void	check_symbols(const char *buf, size_t size)
+static void	check_symbols(const char *buf, unsigned bufsize)
 {
 	int iter;
 	int sharps;
 
-	iter = 0;
+	iter = 0 - 1;
 	sharps = 0;
-	while (iter < 20)
+	while (++iter < 20)
 	{
 		if ((iter + 1) % 5)
 		{
 			if (buf[iter] != '.' && buf[iter] != '#')
 				error();
-			if (buf[iter] == '#' && ++sharps > 4)
-				error();
+			if (buf[iter] == '#')
+				++sharps;
 		}
 		else if (buf[iter] != '\n')
 			error();
-		++iter;
 	}
-	if (sharps != 4 || (size == 21 && buf[20] != '\n'))
+	if (sharps != 4 || (bufsize == 21 && buf[20] != '\n'))
 		error();
 }
 
 static void	check_shapes(const char *buf)
 {
-	size_t i;
+	unsigned i;
+	unsigned contacts;
 
-	i = 0;
-	while (i < 14)
+	i = 0 - 1;
+	contacts = 0;
+	while (++i < 19)
 	{
-		if (buf[i] == '#')
-		{
-			if (buf[i + 4] == '#' && buf[i - 1] != '#' && buf[i + 5] != '#')
-				error();
-			if (buf[i + 6] == '#' && buf[i + 1] != '#' && buf[i + 5] != '#')
-				error();
-		}
-		++i;
+		if (buf[i] != '#')
+			continue;
+		contacts += buf[i + 1] == '#';
+		contacts += i > 4 && buf[i - 5] == '#';
+		contacts += i % 5 && buf[i - 1] == '#';
+		contacts += i < 14 && buf[i + 5] == '#';
 	}
+	if (contacts < 6)
+		error();
 }
 
 t_shape		*get_shapes(const int fd)
