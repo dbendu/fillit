@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstappend.c                                     :+:      :+:    :+:   */
+/*   ft_strrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/18 16:49:20 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/18 16:49:21 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/19 16:37:41 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/04/19 19:35:00 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstappend(t_list **list, t_list *new)
+char	*ft_strrev(char *str)
 {
-	if (!list || !new)
-		return ;
-	if (!*list)
+	int		i;
+	int		j;
+	char	c;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+		i++;
+	while (j <= i / 2)
 	{
-		*list = new;
-		new->end = new;
+		c = str[j];
+		str[j] = str[i];
+		str[i] = c;
+		j++;
 	}
-	else
-	{
-		(*list)->end->next = new;
-		(*list)->end = new;
-	}
+	return (str);
 }

@@ -3,117 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dbendu <dbendu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/25 20:36:36 by dbendu            #+#    #+#             */
-/*   Updated: 2019/06/25 20:36:39 by dbendu           ###   ########.fr       */
+/*   Created: 2019/07/13 17:03:35 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/07/20 18:35:22 by dbendu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "unistd.h"
+#include "fillit.h"
 
-#include "libft.h"
-
-#include "input.h"
-#include "shape.h"
-
-static void	shift_shape_in_corner(t_shape *shape)
+void			ft_point_move(t_shape *shape)
 {
-	size_t iter;
-	size_t x_shift;
-	size_t y_shift;
+	size_t	i;
+	size_t	j;
 
-	x_shift = shape->points[0].x;
-	y_shift = ft_min(ft_min(shape->points[0].y,
-							shape->points[1].y),
-							shape->points[2].y);
-	iter = 0 - 1;
-	while (++iter < 4)
+	j = 0 - 1;
+	i = shape->points[0].x;
+	while (++j < 4)
+		shape->points[j].x -= i;
+	j = shape->points[0].y;
+	if (j > shape->points[1].y)
+		j = shape->points[1].y;
+	if (j > shape->points[2].y)
+		j = shape->points[2].y;
+	i = 0 - 1;
+	while (++i < 4)
+		shape->points[i].y -= j;
+	return ;
+}
+
+int				ft_point_struct(char *s, t_shape *shape)
+{
+	size_t		i;
+	size_t		j;
+
+	i = 0;
+	j = 0;
+	while (i < 20)
 	{
-		shape->points[iter].x -= x_shift;
-		shape->points[iter].y -= y_shift;
-	}
-}
-
-static void	get_shape(t_shape *shape, const char *buf)
-{
-	size_t	iter;
-	size_t	pos;
-
-	iter = 0 - 1;
-	pos = 0;
-	while (++iter < 20)
-		if (buf[iter] == '#')
+		if (s[i] == '#')
 		{
-			shape->points[pos].x = iter / 5;
-			shape->points[pos].y = iter % 5;
-			++pos;
+			shape->points[j].x = i / 5;
+			shape->points[j].y = i % 5;
+			j++;
 		}
-	shift_shape_in_corner(shape);
-}
-
-static void	check_symbols(const char *buf, unsigned bufsize)
-{
-	int iter;
-	int sharps;
-
-	iter = 0 - 1;
-	sharps = 0;
-	while (++iter < 20)
-	{
-		if ((iter + 1) % 5)
-		{
-			if (buf[iter] != '.' && buf[iter] != '#')
-				error();
-			if (buf[iter] == '#')
-				++sharps;
-		}
-		else if (buf[iter] != '\n')
-			error();
+		i++;
 	}
-	if (sharps != 4 || (bufsize == 21 && buf[20] != '\n'))
-		error();
+	return (1);
 }
 
-static void	check_shapes(const char *buf)
+int				ft_check_symbols(char *s, size_t rd)
 {
-	unsigned i;
-	unsigned contacts;
+	size_t	i;
+	size_t	j;
+	size_t	sharps;
 
 	i = 0 - 1;
-	contacts = 0;
-	while (++i < 19)
+	j = 0;
+	sharps = 0;
+	while (++i < 20)
 	{
-		if (buf[i] != '#')
-			continue;
-		contacts += buf[i + 1] == '#';
-		contacts += i > 4 && buf[i - 5] == '#';
-		contacts += i % 5 && buf[i - 1] == '#';
-		contacts += i < 14 && buf[i + 5] == '#';
+		if (!((i + 1) % 5) && s[i] != '\n')
+			return (0);
+		if (s[i] == '#')
+		{
+			sharps += ((i > 4) && (s[i - 5] == '#'));
+			sharps += ((i % 5) && (s[i - 1] == '#'));
+			sharps += ((i < 15) && (s[i + 5] == '#'));
+			sharps += (s[i + 1] == '#');
+			j++;
+		}
 	}
-	if (contacts < 6)
-		error();
+	if (sharps < 6 || j != 4 || (rd == 21 && s[20] != '\n'))
+		return (0);
+	return (1);
 }
 
-t_shape		*get_shapes(const int fd)
+size_t			ft_input(int fd, t_shape **shapes)
 {
-	char		buf[21];
-	t_shape		*shapes;
+	size_t		rd;
+	size_t		check;
 	t_shape		shape;
-	unsigned	prev_read;
-	unsigned	cur_read;
+	size_t		count;
+	char		s[21];
 
-	prev_read = 0;
-	shapes = NULL;
-	while ((cur_read = read(fd, buf, 21)))
+	count = 0;
+	while ((rd = read(fd, s, 21)))
 	{
-		check_symbols(buf, cur_read);
-		check_shapes(buf);
-		get_shape(&shape, buf);
-		ft_shapeappend(&shapes, ft_shapenew(&shape));
-		prev_read = cur_read;
+		++count;
+		if (rd != 20 && rd != 21)
+			return (0);
+		check = ft_check_symbols(s, rd);
+		if (!check)
+			return (0);
+		ft_point_struct(s, &shape);
+		ft_point_move(&shape);
+		ft_list_add_to_end(shapes, ft_list_new(&shape));
+		check = rd;
 	}
-	if (prev_read == 21)
-		error();
-	return (shapes);
+	if (check != 20)
+		return (0);
+	return (count);
 }

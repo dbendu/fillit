@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dswap.c                                         :+:      :+:    :+:   */
+/*   ft_list_add_end.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <ymanilow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 20:12:56 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/08 20:12:57 by dbendu           ###   ########.fr       */
+/*   Created: 2019/07/13 17:40:36 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/07/14 19:21:57 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dswap(double *a, double *b)
+void		ft_list_add_end(t_list **list, t_list *new)
 {
-	double temp;
+	t_list *it;
 
-	if (a && b)
+	if (list && *list && new)
 	{
-		temp = *a;
-		*a = *b;
-		*b = temp;
+		it = *list;
+		while (it->next)
+			it = it->next;
+		it->next = new;
+		new->next = NULL;
 	}
+	else if (new)
+		*list = new;
 }

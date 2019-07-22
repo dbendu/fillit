@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdel.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 13:24:10 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/14 14:00:09 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/04/19 16:57:13 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/05/09 16:49:18 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_strdel(char **as)
+char	*ft_strndup(const char *s1, size_t n)
 {
-	if (as)
+	char	*s;
+	size_t	i;
+
+	i = 0;
+	if (s1)
 	{
-		if (*as)
+		while (s1[i] && i < n)
+			i++;
+		if (!(s = (char*)ft_strnew(i)))
+			return (NULL);
+		if (i == 0)
+			return (s);
+		i--;
+		while (i != 0)
 		{
-			free(*as);
-			*as = NULL;
+			s[i] = s1[i];
+			i--;
 		}
+		s[i] = s1[i];
+		return (s);
 	}
+	return (NULL);
 }

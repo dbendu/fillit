@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.h                                            :+:      :+:    :+:   */
+/*   ft_islower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/25 20:37:59 by dbendu            #+#    #+#             */
-/*   Updated: 2019/06/25 20:38:00 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/19 16:50:06 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/04/19 16:56:01 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_H
-# define INPUT_H
+#include "libft.h"
 
-# include "shape.h"
-
-t_shape		*get_shapes(const int fd);
-extern void	error(void);
-
-#endif
+int		ft_islower(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	else
+		return (0);
+}

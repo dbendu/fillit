@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_charrdel.c                                      :+:      :+:    :+:   */
+/*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 16:37:30 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/16 16:39:56 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/18 15:13:25 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/07/22 09:00:03 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-void	ft_charrdel(char ***arr)
+/*
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 {
-	size_t iter;
+	t_list *name;
+	t_list *p;
 
-	if (!arr || !*arr)
+	if (!alst)
 		return ;
-	iter = 0;
-	while ((*arr)[iter])
+	if (del && *alst)
 	{
-		free((*arr)[iter]);
-		(*arr)[iter] = NULL;
-		++iter;
+		name = *alst;
+		while (name)
+		{
+			p = name->next;
+			del(name->content, name->content_size);
+			free(name);
+			name = name->next;
+		}
+		*alst = NULL;
 	}
-	free(*arr);
-	*arr = NULL;
 }
+*/

@@ -3,16 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 20:20:47 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/08 20:20:48 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/08 18:46:31 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/05/04 19:59:18 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *str, int character)
+char	*ft_strchr(const char *s, int c)
 {
-	return ((char*)ft_memchr((void*)str, character, ft_strlen(str) + 1));
+	char a;
+
+	a = c;
+	c = 0;
+	while (s[c])
+	{
+		if (a == s[c])
+			return ((char *)s + c);
+		c++;
+	}
+	if (a == '\0')
+		return ((char *)s + c);
+	else
+		return (NULL);
 }

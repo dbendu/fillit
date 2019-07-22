@@ -1,18 +1,53 @@
-1:
-	@clear
-	@cd libft && make && make clean && mv libft.a ../ && cd ..
-	@gcc -Wall -Werror -Wextra -Ilibft/includes main.c input.c shape.c solve1.c libft.a -o fillit
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/07/14 19:26:20 by ymanilow          #+#    #+#              #
+#    Updated: 2019/07/22 09:02:06 by user             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-2:
-	@clear
-	@cd libft && make && make clean && mv libft.a ../ && cd ..
-	@gcc -Wall -Werror -Wextra -Ilibft/includes main.c input.c shape.c solve2.c libft.a -o fillit
 
-d:
-	@clear
-	@gcc -g -Wall -Werror -Wextra -Ilibft/includes *.c libft.a -o fillit
+NAME = fillit
 
-c:
-	@clear
-	@gcc -Wall -Werror -Wextra -Ilibft/includes *.c libft.a -o fillit
-	@./fillit file.txt
+SRCS =	fillit.c				\
+		input.c					\
+		shape_actions.c			\
+		main.c
+
+HEADERS =	-Iincludes			\
+			-Ilibft/includes
+
+OBJS =	fillit.o				\
+		input.o					\
+		main.o					\
+		shape_actions.o			\
+		libft/libft.a
+
+
+
+
+all: $(NAME)
+
+
+$(NAME):
+	@make -C libft
+	@gcc -Wall -Wextra -Werror -c $(SRCS) $(HEADERS)
+	@gcc $(OBJS) -o $(NAME)
+
+
+clean:
+	@make clean -C libft
+	@rm -f $(OBJS)
+
+
+fclean: clean
+	@rm -f $(NAME)
+
+
+re: fclean all
+
+f: fclean

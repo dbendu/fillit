@@ -3,42 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 20:29:10 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/08 20:29:11 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/14 18:13:18 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/04/18 16:29:52 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	is_space(char c)
+static int	ft_isspaces(int c)
 {
-	return (c == ' ' || c == '\n' || c == '\t');
+	if (c == '\n' || c == '\t' || c == ' ')
+		return (1);
+	else
+		return (0);
 }
 
-char		*ft_strtrim(char *s)
+char		*ft_strtrim(char const *s)
 {
-	int		i;
-	int		len;
+	size_t	i;
 	char	*str;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
-	len = ft_strlen(s);
-	while (is_space(s[len - 1]))
-		len--;
-	i = -1;
-	while (is_space(s[++i]))
-		len--;
-	if (len <= 0)
-		len = 0;
-	if (!(str = (char*)malloc(sizeof(char) * (len + 1))))
+	while (ft_isspaces(*s))
+		s++;
+	i = ft_strlen(s);
+	while ((ft_isspaces(s[i]) || s[i] == '\0') && i != 0)
+		i--;
+	if (i == 0 && (ft_isspaces(s[i]) || s[i] == '\0'))
+	{
+		if (!(str = ft_strnew(i + 1)))
+			return (NULL);
+		return (str);
+	}
+	if (!(str = ft_strnew(i + 1)))
 		return (NULL);
-	s += i;
-	i = -1;
-	while (++i < len)
-		str[i] = *s++;
-	str[i] = '\0';
+	while (i != 0)
+	{
+		str[i] = s[i];
+		i--;
+	}
+	str[i] = s[i];
 	return (str);
 }

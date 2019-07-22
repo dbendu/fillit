@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_isupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 20:15:40 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/08 20:15:41 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/19 16:30:34 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/04/19 16:54:26 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstremove(t_list **list)
+int		ft_isupper(int c)
 {
-	if (!list || !*list)
-		return ;
-	free((*list)->content);
-	free(*list);
-	*list = NULL;
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	else
+		return (0);
 }

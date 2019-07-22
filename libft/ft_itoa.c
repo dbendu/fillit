@@ -3,55 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 20:14:35 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/08 20:14:36 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/17 18:26:53 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/04/17 20:53:10 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void		ft_isnegative_topos(int *num, size_t *is_negative)
+static int		ft_checklen(int n, int i)
 {
-	if (*num < 0)
+	while (n / 10)
 	{
-		*is_negative = 1;
-		*num = -*num;
+		i++;
+		n = n / 10;
 	}
-	else
-		*is_negative = 0;
+	return (i);
 }
 
-static size_t	ft_size_of_num(int n)
+char			*ft_itoa(int n)
 {
-	size_t size;
+	size_t	i;
+	int		baze;
+	char	*s;
 
-	size = 0;
-	while (n /= 10)
-		++size;
-	return (size + 1);
-}
-
-char			*ft_itoa(int num)
-{
-	register char	*str;
-	register size_t	size;
-	size_t			sign;
-
-	if (num == MIN_INT)
-		return (ft_strdup("-2147483648"));
-	size = ft_size_of_num(num) + 1 + (num < 0);
-	ft_isnegative_topos(&num, &sign);
-	if (!(str = (char*)malloc(size)))
+	i = 1;
+	baze = 1;
+	if (n < 0)
+	{
+		baze = -1;
+		i++;
+	}
+	i = ft_checklen(n * baze, i);
+	if (!(s = ft_memalloc(i + 1)))
 		return (NULL);
-	str[--size] = '\0';
-	while (size--)
+	s[i--] = '\0';
+	while (n / 10)
 	{
-		str[size] = (num % 10 + 48);
-		num /= 10;
+		s[i] = baze * (n % 10) + '0';
+		i--;
+		n = n / 10;
 	}
-	if (sign)
-		str[0] = '-';
-	return (str);
+	s[i--] = baze * n + '0';
+	if (baze == -1)
+		s[i] = '-';
+	return (s);
 }

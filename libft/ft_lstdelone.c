@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cswap.c                                         :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 20:12:44 by dbendu            #+#    #+#             */
-/*   Updated: 2019/04/08 20:12:47 by dbendu           ###   ########.fr       */
+/*   Created: 2019/04/18 14:30:30 by ymanilow          #+#    #+#             */
+/*   Updated: 2019/04/27 11:54:14 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_cswap(char *a, char *b)
+void	ft_lstdelone(t_list **alst, void (*del)(void*, size_t))
 {
-	char temp;
+	t_list *name;
 
-	if (a && b)
+	if (!alst)
+		return ;
+	if (del && *alst)
 	{
-		temp = *a;
-		*a = *b;
-		*b = temp;
+		name = *alst;
+		del(name->content, name->content_size);
+		free(*alst);
+		*alst = NULL;
 	}
 }
