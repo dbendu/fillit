@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_strclr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sleonia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/18 15:13:25 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/27 11:53:51 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/04/11 09:38:41 by sleonia           #+#    #+#             */
+/*   Updated: 2019/04/11 09:38:43 by sleonia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+void	ft_strclr(char *s)
 {
-	t_list *name;
-	t_list *p;
+	size_t len;
 
-	if (!alst)
+	if (!s)
 		return ;
-	if (del && *alst)
-	{
-		name = *alst;
-		while (name)
-		{
-			p = name->next;
-			del(name->content, name->content_size);
-			free(name);
-			name = name->next;
-		}
-		*alst = NULL;
-	}
+	len = ft_strlen(s);
+	ft_bzero(s, len);
 }

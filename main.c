@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dbendu <dbendu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 14:16:08 by dbendu            #+#    #+#             */
-/*   Updated: 2019/07/22 08:59:20 by user             ###   ########.fr       */
+/*   Updated: 2019/07/26 17:13:30 by dbendu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@ int			error(void)
 {
 	write(1, "error\n", 6);
 	exit(0);
-}
-
-void		ft_map_delete(char **map)
-{
-	free(map[0]);
-	free(map);
-	return ;
 }
 
 char		**ft_map_create(size_t map_size)
@@ -49,18 +42,27 @@ char		**ft_map_create(size_t map_size)
 	return (map);
 }
 
-void print_map(char **map, size_t map_size)
+const char colors[13][12] = {
+	"\e[38;5;001m",
+	"\e[38;5;002m",
+	"\e[38;5;003m",
+	"\e[38;5;004m",
+	"\e[38;5;005m",
+	"\e[38;5;006m",
+	"\e[38;5;011m",
+	"\e[38;5;013m",
+	"\e[38;5;014m",
+	"\e[38;5;042m",
+	"\e[38;5;046m",
+	"\e[38;5;082m",
+	"\e[38;5;225m"
+};
+
+void		print_map(char **map, size_t map_size)
 {
 	size_t x;
 	size_t y;
-	const char colors[13][12] = {
-		"\e[38;5;001m",	"\e[38;5;002m",	"\e[38;5;003m",
-		"\e[38;5;004m",	"\e[38;5;005m",	"\e[38;5;006m",
-		"\e[38;5;011m",	"\e[38;5;013m",	"\e[38;5;014m",
-		"\e[38;5;042m",	"\e[38;5;046m",	"\e[38;5;082m",
-		"\e[38;5;225m"
-	};
-	
+
 	x = 0 - 1;
 	while (++x < map_size)
 	{
@@ -84,13 +86,15 @@ void		ft_do_fillit(t_shape *shapes, size_t points)
 {
 	size_t	map_size;
 	char	**map;
+
 	map_size = 1;
 	while (map_size * map_size < points)
 		++map_size;
 	map = ft_map_create(map_size);
 	while (!(ft_fillit(&map, shapes, map_size)))
 	{
-		ft_map_delete(map);
+		free(map[0]);
+		free(map);
 		map = ft_map_create(++map_size);
 	}
 	print_map(map, map_size);

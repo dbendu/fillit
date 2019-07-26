@@ -6,7 +6,7 @@
 /*   By: dbendu <dbendu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/13 17:03:35 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/07/20 18:35:22 by dbendu           ###   ########.fr       */
+/*   Updated: 2019/07/25 17:06:30 by ymanilow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,47 @@ int				ft_point_struct(char *s, t_shape *shape)
 	return (1);
 }
 
+int				ft_check_shapes(char *s)
+{
+	size_t	i;
+	size_t	shapes;
+
+	i = 0 - 1;
+	shapes = 0;
+	while (++i < 20)
+		if (s[i] == '#')
+		{
+			shapes += i > 4 && s[i - 5] == '#';
+			shapes += i % 5 && s[i - 1] == '#';
+			shapes += i < 14 && s[i + 5] == '#';
+			shapes += s[i + 1] == '#';
+		}
+	if (shapes < 6)
+		return (0);
+	return (1);
+}
+
 int				ft_check_symbols(char *s, size_t rd)
 {
 	size_t	i;
-	size_t	j;
+	size_t	new_lines;
 	size_t	sharps;
 
 	i = 0 - 1;
-	j = 0;
 	sharps = 0;
+	new_lines = 0;
 	while (++i < 20)
 	{
+		if (s[i] != '.' && s[i] != '#' && s[i] != '\n')
+			return (0);
 		if (!((i + 1) % 5) && s[i] != '\n')
 			return (0);
 		if (s[i] == '#')
-		{
-			sharps += ((i > 4) && (s[i - 5] == '#'));
-			sharps += ((i % 5) && (s[i - 1] == '#'));
-			sharps += ((i < 15) && (s[i + 5] == '#'));
-			sharps += (s[i + 1] == '#');
-			j++;
-		}
+			sharps++;
+		else if (s[i] == '\n')
+			new_lines++;
 	}
-	if (sharps < 6 || j != 4 || (rd == 21 && s[20] != '\n'))
+	if (sharps != 4 || new_lines != 4 || (rd == 21 && s[20] != '\n'))
 		return (0);
 	return (1);
 }
@@ -93,8 +111,9 @@ size_t			ft_input(int fd, t_shape **shapes)
 		++count;
 		if (rd != 20 && rd != 21)
 			return (0);
-		check = ft_check_symbols(s, rd);
-		if (!check)
+		if (!ft_check_symbols(s, rd))
+			return (0);
+		if (!ft_check_shapes(s))
 			return (0);
 		ft_point_struct(s, &shape);
 		ft_point_move(&shape);

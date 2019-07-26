@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sleonia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/18 15:13:25 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/27 11:53:51 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/04/09 20:56:16 by sleonia           #+#    #+#             */
+/*   Updated: 2019/04/09 21:03:07 by sleonia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+char	*ft_strstr(const char *s1, const char *s2)
 {
-	t_list *name;
-	t_list *p;
+	size_t		i;
+	size_t		k;
+	char		*str;
 
-	if (!alst)
-		return ;
-	if (del && *alst)
+	str = (char *)s1;
+	i = 0;
+	if (!*s2)
+		return (str);
+	while (str[i])
 	{
-		name = *alst;
-		while (name)
+		k = 0;
+		while (s2[k] == str[i + k])
 		{
-			p = name->next;
-			del(name->content, name->content_size);
-			free(name);
-			name = name->next;
+			if (!(s2[k + 1]))
+				return (str + i);
+			k++;
 		}
-		*alst = NULL;
+		i++;
 	}
+	return (NULL);
 }

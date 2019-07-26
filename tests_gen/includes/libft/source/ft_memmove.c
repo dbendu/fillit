@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sleonia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/18 15:13:25 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/27 11:53:51 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/04/10 15:17:19 by sleonia           #+#    #+#             */
+/*   Updated: 2019/04/10 20:57:07 by sleonia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	t_list *name;
-	t_list *p;
+	char	*d;
+	char	*s;
+	size_t	i;
 
-	if (!alst)
-		return ;
-	if (del && *alst)
+	i = 0;
+	d = (char *)dst;
+	s = (char *)src;
+	if (s > d)
 	{
-		name = *alst;
-		while (name)
+		while (i < len)
 		{
-			p = name->next;
-			del(name->content, name->content_size);
-			free(name);
-			name = name->next;
+			d[i] = s[i];
+			i++;
 		}
-		*alst = NULL;
 	}
+	else if (s < d)
+	{
+		while (len-- > 0)
+			d[len] = s[len];
+	}
+	return (dst);
 }

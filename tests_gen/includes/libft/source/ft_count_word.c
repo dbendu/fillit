@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_countWord.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sleonia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/18 15:13:25 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/27 11:53:51 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/04/21 12:49:19 by sleonia           #+#    #+#             */
+/*   Updated: 2019/04/21 12:49:21 by sleonia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+int		ft_count_word(const char *s, char c)
 {
-	t_list *name;
-	t_list *p;
+	unsigned int i;
+	unsigned int count;
 
-	if (!alst)
-		return ;
-	if (del && *alst)
+	i = 0;
+	count = 0;
+	while (s[i])
 	{
-		name = *alst;
-		while (name)
+		while (s[i] != c)
 		{
-			p = name->next;
-			del(name->content, name->content_size);
-			free(name);
-			name = name->next;
+			if (s[i + 1] == c)
+				count++;
+			if (!(s[i + 1]))
+				return (count);
+			i++;
 		}
-		*alst = NULL;
+		i++;
 	}
+	return (count);
 }
