@@ -3,35 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/17 21:59:16 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/18 20:07:35 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/04/08 20:18:45 by dbendu            #+#    #+#             */
+/*   Updated: 2019/08/12 12:34:25 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int n, int fd)
+void	ft_putnbr_fd(int num, int fd)
 {
-	int baze;
+	char	cnum[11];
+	size_t	iter;
 
-	baze = 1;
-	if (n == -2147483648)
+	if (num == MIN_INT)
 	{
-		n = 8;
-		ft_putstr_fd((const char*)"-214748364", fd);
+		ft_putstr_fd("-2147483648", fd);
+		return ;
 	}
-	if (n < 0)
+	iter = 0;
+	if (num < 0)
 	{
-		ft_putchar_fd('-', fd);
-		baze = -1;
+		cnum[iter++] = '-';
+		num = -num;
 	}
-	if (n / 10)
+	while (num)
 	{
-		ft_putnbr_fd(baze * (n / 10), fd);
-		ft_putchar_fd(baze * (n % 10) + '0', fd);
+		cnum[iter] = num % 10 + '0';
+		num /= 10;
+		++iter;
 	}
-	else
-		ft_putchar_fd(baze * (n % 10) + '0', fd);
+	cnum[iter] = '\0';
+	ft_strrev(cnum + (cnum[0] == '-'));
+	ft_putstr_fd(cnum, fd);
 }

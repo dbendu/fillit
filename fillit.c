@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fillit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <dbendu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/13 17:03:12 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/07/21 12:00:09 by dbendu           ###   ########.fr       */
+/*   Updated: 2019/08/12 13:43:41 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,34 @@ static inline int	check_bounds(size_t map_size, size_t x, size_t y,
 	return (0);
 }
 
-static int			ft_check_figure(char **map, t_shape *shapes,
+static int			ft_check_figure(char **map, t_shape *shape,
 										size_t x, size_t y)
 {
-	if (map[shapes->points[0].x + x][shapes->points[0].y + y] == '.' &&
-		map[shapes->points[1].x + x][shapes->points[1].y + y] == '.' &&
-		map[shapes->points[2].x + x][shapes->points[2].y + y] == '.' &&
-		map[shapes->points[3].x + x][shapes->points[3].y + y] == '.')
+	if (map[shape->points[0].x + x][shape->points[0].y + y] == '.' &&
+		map[shape->points[1].x + x][shape->points[1].y + y] == '.' &&
+		map[shape->points[2].x + x][shape->points[2].y + y] == '.' &&
+		map[shape->points[3].x + x][shape->points[3].y + y] == '.')
 		return (1);
 	return (0);
 }
 
-static void			ft_place_figure(char **map, t_shape *shapes,
+static void			ft_place_figure(char **map, t_shape *shape,
 									size_t x, size_t y)
 {
-	map[shapes->points[0].x + x][shapes->points[0].y + y] = shapes->letter;
-	map[shapes->points[1].x + x][shapes->points[1].y + y] = shapes->letter;
-	map[shapes->points[3].x + x][shapes->points[3].y + y] = shapes->letter;
-	map[shapes->points[2].x + x][shapes->points[2].y + y] = shapes->letter;
+	map[shape->points[0].x + x][shape->points[0].y + y] = shape->letter;
+	map[shape->points[1].x + x][shape->points[1].y + y] = shape->letter;
+	map[shape->points[3].x + x][shape->points[3].y + y] = shape->letter;
+	map[shape->points[2].x + x][shape->points[2].y + y] = shape->letter;
 	return ;
 }
 
-static void			ft_clean_map(char **map, t_shape *shapes,
+static void			ft_clean_map(char **map, t_shape *shape,
 									size_t x, size_t y)
 {
-	map[shapes->points[0].x + x][shapes->points[0].y + y] = '.';
-	map[shapes->points[1].x + x][shapes->points[1].y + y] = '.';
-	map[shapes->points[2].x + x][shapes->points[2].y + y] = '.';
-	map[shapes->points[3].x + x][shapes->points[3].y + y] = '.';
+	map[shape->points[0].x + x][shape->points[0].y + y] = '.';
+	map[shape->points[1].x + x][shape->points[1].y + y] = '.';
+	map[shape->points[2].x + x][shape->points[2].y + y] = '.';
+	map[shape->points[3].x + x][shape->points[3].y + y] = '.';
 	return ;
 }
 

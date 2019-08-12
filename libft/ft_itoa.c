@@ -3,50 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/17 18:26:53 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/17 20:53:10 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/08/04 19:51:34 by user              #+#    #+#             */
+/*   Updated: 2019/08/12 11:59:51 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_checklen(int n, int i)
+char	*ft_itoa(__int128_t num, char *str, unsigned base, unsigned is_upper)
 {
-	while (n / 10)
-	{
-		i++;
-		n = n / 10;
-	}
-	return (i);
-}
+	const char	*alphabet = is_upper ? "0123456789ABCDEF" : "0123456789abcdef";
+	char		*iter;
 
-char			*ft_itoa(int n)
-{
-	size_t	i;
-	int		baze;
-	char	*s;
-
-	i = 1;
-	baze = 1;
-	if (n < 0)
+	if (num == MIN_INT)
+		return (ft_strcpy(str, "-2147483648"));
+	iter = str;
+	if (base == 10 && num < 0)
 	{
-		baze = -1;
-		i++;
+		*iter++ = '-';
+		num = -num;
 	}
-	i = ft_checklen(n * baze, i);
-	if (!(s = ft_memalloc(i + 1)))
-		return (NULL);
-	s[i--] = '\0';
-	while (n / 10)
+	if (!num)
+		*iter++ = '0';
+	while (num)
 	{
-		s[i] = baze * (n % 10) + '0';
-		i--;
-		n = n / 10;
+		*iter++ = alphabet[num % base];
+		num /= base;
 	}
-	s[i--] = baze * n + '0';
-	if (baze == -1)
-		s[i] = '-';
-	return (s);
+	*iter = '\0';
+	ft_strrev(str + (*str == '-'));
+	return (str);
 }

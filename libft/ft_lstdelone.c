@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_lstremove.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymanilow <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/18 14:30:30 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/04/27 11:54:14 by ymanilow         ###   ########.fr       */
+/*   Created: 2019/04/08 20:15:40 by dbendu            #+#    #+#             */
+/*   Updated: 2019/08/01 23:17:19 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list **alst, void (*del)(void*, size_t))
+void	ft_lstdelone(t_list **list)
 {
-	t_list *name;
-
-	if (!alst)
+	if (!list || !*list)
 		return ;
-	if (del && *alst)
-	{
-		name = *alst;
-		del(name->content, name->content_size);
-		free(*alst);
-		*alst = NULL;
-	}
+	free((*list)->content);
+	free(*list);
+	*list = NULL;
 }

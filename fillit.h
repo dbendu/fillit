@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fillit.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <dbendu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/13 16:28:29 by ymanilow          #+#    #+#             */
-/*   Updated: 2019/07/25 17:03:56 by ymanilow         ###   ########.fr       */
+/*   Updated: 2019/08/12 13:44:28 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FILLIT_H
 
 # include <stdio.h>
-# include "libft/libft.h"
+# include "libft.h"
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
@@ -25,11 +25,11 @@ typedef struct			s_point
 	unsigned int		y;
 }						t_point;
 
-typedef struct			s_shapes
+typedef struct			s_shape
 {
 	t_point				points[4];
-	struct s_shapes		*next;
-	struct s_shapes		*end;
+	struct s_shape		*next;
+	struct s_shape		*end;
 	size_t				letter;
 }						t_shape;
 
