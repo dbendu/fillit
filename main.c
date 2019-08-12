@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 14:16:08 by dbendu            #+#    #+#             */
-/*   Updated: 2019/08/12 13:45:44 by user             ###   ########.fr       */
+/*   Updated: 2019/08/12 14:12:59 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,7 @@ int			main(int argc, const char *const *argv)
 	shapes_count = ft_input(fd, &shapes);
 	close(fd);
 	if (!shapes_count || shapes_count > 26)
-	{
-		printf("%zu\n", shapes_count);
-		error("Invalid amount of shapes", 1);
-	}
+		error("Invalid input", 1);
 	ft_do_fillit(shapes, shapes_count * 4);
 	ft_shapes_clear(shapes);
 	return (0);
