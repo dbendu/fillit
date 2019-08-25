@@ -85,6 +85,8 @@ void		ft_do_fillit(t_shape *shapes, size_t points)
 		map = ft_map_create(++map_size);
 	}
 	print_map(map, map_size);
+	free(map[0]);
+	free(map);
 }
 
 int			main(int argc, const char *const *argv)
