@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 14:16:08 by dbendu            #+#    #+#             */
-/*   Updated: 2019/08/12 14:12:59 by user             ###   ########.fr       */
+/*   Updated: 2019/11/07 16:06:53 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char		**ft_map_create(size_t map_size)
 	unsigned	col;
 	char		**map;
 
-	map = (char**)malloc(sizeof(char*) * (map_size + 1));
-	map[0] = (char*)malloc(map_size * (map_size + 2));
+	map = (char**)ft_malloc(sizeof(char*) * (map_size + 1));
+	map[0] = (char*)ft_malloc(map_size * (map_size + 2));
 	row = 0;
 	while (++row < map_size)
 		map[row] = map[row - 1] + map_size + 2;
@@ -80,13 +80,13 @@ void		ft_do_fillit(t_shape *shapes, size_t points)
 	map = ft_map_create(map_size);
 	while (!(ft_fillit(&map, shapes, map_size)))
 	{
-		free(map[0]);
-		free(map);
+		ft_free(map[0]);
+		ft_free(map);
 		map = ft_map_create(++map_size);
 	}
 	print_map(map, map_size);
-	free(map[0]);
-	free(map);
+	ft_free(map[0]);
+	ft_free(map);
 }
 
 int			main(int argc, const char *const *argv)
@@ -102,12 +102,12 @@ int			main(int argc, const char *const *argv)
 		return (0);
 	}
 	if (((fd = open(argv[1], O_RDONLY)) == -1))
-		error("Can't open the file", 1);
+		error(STDERR, "Can't open the file", NULL, 1);
 	shapes = NULL;
 	shapes_count = ft_input(fd, &shapes);
 	close(fd);
 	if (!shapes_count || shapes_count > 26)
-		error("Invalid input", 1);
+		error(STDERR, "Invalid input", NULL, 1);
 	ft_do_fillit(shapes, shapes_count * 4);
 	ft_shapes_clear(shapes);
 	return (0);

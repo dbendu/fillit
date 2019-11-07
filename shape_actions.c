@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shape_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbendu <dbendu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 17:27:59 by dbendu            #+#    #+#             */
-/*   Updated: 2019/07/20 18:35:08 by dbendu           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:03:34 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ t_shape		*ft_list_new(t_shape *shapes)
 {
 	t_shape *new;
 
-	if (!(new = malloc(sizeof(t_shape))))
-		return (NULL);
+	new = ft_malloc(sizeof(t_shape));
 	ft_memcpy(new->points, shapes->points, sizeof(t_point) * 4);
 	new->next = NULL;
 	return (new);
@@ -51,7 +50,7 @@ void		ft_shapes_clear(t_shape *shapes)
 	while (shapes)
 	{
 		temp = shapes->next;
-		free(shapes);
+		ft_free(shapes);
 		shapes = temp;
 	}
 }
