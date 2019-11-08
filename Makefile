@@ -40,8 +40,8 @@ $(NAME):
 
 
 clean:
+	@rm -f $(OFJS)
 	@make clean -C libft
-	@rm -f $(OBJS)
 
 
 fclean: clean
